@@ -83,6 +83,7 @@ quip.apps.initialize({
                     }
                 }
 
+                let type="ChildRecords";
                 if (recordId.length == 18) {
                     salesforceClient
                         .fetchRecordAndSchema(recordId)
@@ -100,7 +101,8 @@ quip.apps.initialize({
                             rootRecord.setSelectedRecord(
                                 recordId,
                                 schema,
-                                userDefinedFields);
+                                userDefinedFields,
+                                type);
                         });
                 }
             }
@@ -112,20 +114,20 @@ quip.apps.initialize({
         }
 
         if (!params.isCreation) {
-            var rootRecords = [];
             console.log('Default data load');
             const recordId = '0063i000002FGghAAG';
-            let RecordIds = ['a0F3i000000ubCMEAY','a0F3i000000u4YqEAI']; 
+            
             /* Get ChildRecords of Opportunity 
             salesforceClient.fetchChildRecords(recordId).then(([childCount, childrecords]) => {
                 console.log(childrecords);
             }); */
+
             var userDefinedFields;
-            for(var i=0;i<RecordIds.length;i++){
-                rootRecords[i] = quip.apps.getRootRecord();
-                rootRecords[i].setClient(salesforceClient);
-                salesforceClient
-                    .fetchRecordAndSchema(RecordIds[i])
+            let RecordIds = ['a0F3i000000ubCMEAY','a0F3i000000u4YqEAI'];
+
+           //for (let i=0;i<RecordIds.length;i++){
+            salesforceClient
+                    .fetchRecordAndSchema(RecordIds[0])
                     .then(([fields, schema]) => {
                         if (userDefinedFields) {
                             userDefinedFields = userDefinedFields.filter(
@@ -135,40 +137,53 @@ quip.apps.initialize({
                                             field => field.key == key) !=
                                         null
                                     );
-                                });
+                                }); 
                         }
-
-                        rootRecords[i].setSelectedRecord(
-                            RecordIds[i],
-                            schema,
-                            userDefinedFields);
+                        console.log("recordId0",RecordIds[0]);
+                    rootRecord.setSelectedRecord(
+                        RecordIds[0],
+                        schema,
+                        userDefinedFields);
                 });
-            }
-            ReactDOM.render(
-                <div>   
-                    <WrappedRoot
-                    isCreation={params.isCreation}
-                    entity={rootRecords[0]}
-                    menuDelegate={menuDelegate}
-                    ref={node => {
-                        rootComponent = node;
-                        rootRecords[0].setDom(ReactDOM.findDOMNode(node));
-                    }}/>
-                    <WrappedRoot
-                    isCreation={params.isCreation}
-                    entity={rootRecords[1]}
-                    menuDelegate={menuDelegate}
-                    ref={node => {
-                        rootComponent = node;
-                        rootRecords[1].setDom(ReactDOM.findDOMNode(node));
-                    }}/>
-                    </div>,
-                root);
+
+
+                salesforceClient
+                    .fetchRecordAndSchema(RecordIds[1])
+                    .then(([fields, schema]) => {
+                        if (userDefinedFields) {
+                            userDefinedFields = userDefinedFields.filter(
+                                key => {
+                                    return (
+                                        fields.find(
+                                            field => field.key == key) !=
+                                        null
+                                    );
+                                }); 
+                        }
+                        console.log("recordId1",RecordIds[1]);
+                    rootRecord.setSelectedRecordData(
+                        RecordIds[1],
+                        schema,
+                        userDefinedFields);
+                    }).then(steps => {
+           /// }    
             
+                    ReactDOM.render(
+                        <div>
+                                <WrappedRoot
+                                    isCreation={params.isCreation}
+                                    entity={rootRecord}
+                                    menuDelegate={menuDelegate}
+                                    ref={node => {
+                                        rootComponent = node;
+                                        rootRecord.setDom(ReactDOM.findDOMNode(node));
+                                    }}
+                                />
+                        </div>,
+                        root);
+                    });   
             //rootRecord.ensureCurrentDataVersion();
         }
-        
-
         menuDelegate.refreshToolbar();
     },
 });
@@ -353,15 +368,30 @@ class Root extends React.Component {
         }
 
         const selectedRecord = entity.getSelectedRecord();
+
+        const selectedRecordData = entity.getSelectedRecordData();
+
+        console.log("SelectedRec",selectedRecord);
+        console.log("SelectedRecData",selectedRecordData);
+        // array of child records //
         // Should hit this only in url unfurling case
         if (!selectedRecord) {
             return <quip.apps.ui.Spinner size={25} loading={true}/>;
         }
-        const recordComponent = <Record
-            isCreation={this.props.isCreation}
-            entity={selectedRecord}
-            menuDelegate={menuDelegate}
-            ref={node => (this.recordComponent_ = node)}/>;
+    
+        // array of record compo //
+        const recordComponent = <div>
+                <Record
+                    isCreation={this.props.isCreation}
+                    entity={selectedRecord}
+                    menuDelegate={menuDelegate}
+                    ref={node => (this.recordComponent_ = node)}/>
+                <Record
+                    isCreation={this.props.isCreation}
+                    entity={selectedRecordData}
+                    menuDelegate={menuDelegate}
+                    ref={node => (this.recordComponent_ = node)}/>    
+            </div>;
 
         const recordContainerClassNames = [];
         let chooseRecordButton;
@@ -392,7 +422,7 @@ class Root extends React.Component {
                 {chooseRecordButton}
                 {contextInstructions}
                 {placeholderOverlay}
-                {recordComponent}
+                {recordComponent} 
             </div>
             {dialog}
         </div>;

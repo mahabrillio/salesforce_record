@@ -16,9 +16,11 @@ export class RecordPickerEntity extends quip.apps.RootRecord {
         return {
             lastFetchedTime: "number",
             selectedRecord: SalesforceRecordEntity,
+            selectedRecordData: SalesforceRecordEntity, 
             useSandbox: "boolean",
             instanceUrl: "string",
-        };
+            selectedRecords: "array",
+       };
     }
 
     static getDefaultProperties() {
@@ -38,7 +40,6 @@ export class RecordPickerEntity extends quip.apps.RootRecord {
             return;
         }
 
-        const selectedRecords = [];
         const recordId = selectedRecord.get("recordId");
         if (recordId === PlaceholderData.recordId) {
             // If no record was selected, just blow away and re-initialized with
@@ -79,6 +80,9 @@ export class RecordPickerEntity extends quip.apps.RootRecord {
     clearCachedData() {
         if (this.getSelectedRecord()) {
             this.getSelectedRecord().clearCachedData();
+        }
+        if (this.getSelectedRecordData()) {
+            this.getSelectedRecordData().clearCachedData();
         }
     }
 
@@ -161,12 +165,58 @@ export class RecordPickerEntity extends quip.apps.RootRecord {
         this.recordRecordTypeSelection(schema.apiName);
     }
 
+    /**
+     * @return {SalesforceRecordEntity}
+     */
+    getSelectedRecordData() {
+        return this.get("selectedRecordData");
+    }
+
+    setSelectedRecordData(recordId, schema, initialFields = null) {
+        this.clearSelectedRecordData();
+        // Update the schema and owner based on the current user's view.
+        const ownerId = quip.apps.getViewingUser().getId();
+        this.set("instanceUrl", this.getClient().getInstanceUrl());
+
+        this.set("selectedRecordData", {
+            recordId: recordId,
+            ownerId: ownerId,
+        });
+        
+        this.setDataVersion(RecordPickerEntity.DATA_VERSION);
+        this.getSelectedRecordData().setSchema(schema);
+        this.getSelectedRecordData().fetchData(false, false, initialFields);
+        const metricArgs = {
+            action: "selected_record",
+            record_type: this.getSelectedRecordData().getType(),
+            custom: String(schema.custom),
+        };
+
+        Object.values(schema.unsupportedFields).forEach(field => {
+            const key = `unsupported_data_type_${field.dataType}`;
+            metricArgs[key] = String(
+                parseInt((metricArgs[key] || "0") + 1, 10));
+        });
+
+        const metricName = this.getSelectedRecordData().getMetricName();
+        quip.apps.recordQuipMetric(metricName, metricArgs);
+        this.recordRecordTypeSelection(schema.apiName);    
+    }
+
     clearSelectedRecord() {
         if (this.getSelectedRecord()) {
             this.getSelectedRecord().clearRecord();
         }
         this.clear("instanceUrl");
         this.clear("selectedRecord");
+    }
+
+    clearSelectedRecordData() {
+        if (this.getSelectedRecordData()) {
+            this.getSelectedRecordData().clearRecord();
+        }
+        this.clear("instanceUrl");
+        this.clear("selectedRecordData");
     }
 
     loadPlaceholderData() {
