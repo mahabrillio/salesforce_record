@@ -19,7 +19,7 @@ export class RecordPickerEntity extends quip.apps.RootRecord {
             selectedRecordData: SalesforceRecordEntity, 
             useSandbox: "boolean",
             instanceUrl: "string",
-            selectedRecords: "array",
+            selectedProducts: "array",
        };
     }
 

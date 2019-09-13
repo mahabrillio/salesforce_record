@@ -125,28 +125,28 @@ quip.apps.initialize({
             var userDefinedFields;
             let RecordIds = ['a0F3i000000ubCMEAY','a0F3i000000u4YqEAI'];
 
-           //for (let i=0;i<RecordIds.length;i++){
-            salesforceClient
-                    .fetchRecordAndSchema(RecordIds[0])
-                    .then(([fields, schema]) => {
-                        if (userDefinedFields) {
-                            userDefinedFields = userDefinedFields.filter(
-                                key => {
-                                    return (
-                                        fields.find(
-                                            field => field.key == key) !=
-                                        null
-                                    );
-                                }); 
-                        }
-                        console.log("recordId0",RecordIds[0]);
-                    rootRecord.setSelectedRecord(
-                        RecordIds[0],
-                        schema,
-                        userDefinedFields);
+           for (let i=0;i<RecordIds.length;i++){
+                salesforceClient
+                        .fetchRecordAndSchema(RecordIds[i])
+                        .then(([fields, schema]) => {
+                            if (userDefinedFields) {
+                                userDefinedFields = userDefinedFields.filter(
+                                    key => {
+                                        return (
+                                            fields.find(
+                                                field => field.key == key) !=
+                                            null
+                                        );
+                                    }); 
+                            }
+                            console.log("recordId0",RecordIds[i]);
+                        rootRecord.setSelectedRecord(
+                            RecordIds[i],
+                            schema,
+                            userDefinedFields);
                 });
-
-
+            }    
+                /*
                 salesforceClient
                     .fetchRecordAndSchema(RecordIds[1])
                     .then(([fields, schema]) => {
@@ -166,7 +166,7 @@ quip.apps.initialize({
                         schema,
                         userDefinedFields);
                     }).then(steps => {
-           /// }    
+           /// }    */
             
                     ReactDOM.render(
                         <div>
@@ -181,7 +181,7 @@ quip.apps.initialize({
                                 />
                         </div>,
                         root);
-                    });   
+                    //});   
             //rootRecord.ensureCurrentDataVersion();
         }
         menuDelegate.refreshToolbar();
