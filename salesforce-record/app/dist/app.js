@@ -4649,7 +4649,19 @@ if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
 
 
 /***/ }),
-/* 4 */,
+/* 4 */
+/***/ (function(module, exports) {
+
+module.exports = function (exec) {
+  try {
+    return !!exec();
+  } catch (e) {
+    return true;
+  }
+};
+
+
+/***/ }),
 /* 5 */
 /***/ (function(module, exports) {
 
@@ -4680,7 +4692,7 @@ $exports.store = store;
 /***/ (function(module, exports, __webpack_require__) {
 
 // Thank's IE8 for his funny defineProperty
-module.exports = !__webpack_require__(665)(function () {
+module.exports = !__webpack_require__(4)(function () {
   return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
 });
 
@@ -4796,7 +4808,7 @@ __webpack_require__(22).inspectSource = function (it) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var $export = __webpack_require__(0);
-var fails = __webpack_require__(665);
+var fails = __webpack_require__(4);
 var defined = __webpack_require__(24);
 var quot = /"/g;
 // B.2.3.2.1 CreateHTML(string, tag, attribute, value)
@@ -4922,7 +4934,7 @@ module.exports = function (it) {
 
 "use strict";
 
-var fails = __webpack_require__(665);
+var fails = __webpack_require__(4);
 
 module.exports = function (method, arg) {
   return !!method && fails(function () {
@@ -4988,7 +5000,7 @@ module.exports = function (it) {
 // most Object methods by ES6 should accept primitives
 var $export = __webpack_require__(0);
 var core = __webpack_require__(22);
-var fails = __webpack_require__(665);
+var fails = __webpack_require__(4);
 module.exports = function (KEY, exec) {
   var fn = (core.Object || {})[KEY] || Object[KEY];
   var exp = {};
@@ -5056,7 +5068,7 @@ module.exports = function (TYPE, $create) {
 if (__webpack_require__(7)) {
   var LIBRARY = __webpack_require__(36);
   var global = __webpack_require__(3);
-  var fails = __webpack_require__(665);
+  var fails = __webpack_require__(4);
   var $export = __webpack_require__(0);
   var $typed = __webpack_require__(74);
   var $buffer = __webpack_require__(113);
@@ -5650,7 +5662,7 @@ var id = 0;
 var isExtensible = Object.isExtensible || function () {
   return true;
 };
-var FREEZE = !__webpack_require__(665)(function () {
+var FREEZE = !__webpack_require__(4)(function () {
   return isExtensible(Object.preventExtensions({}));
 });
 var setMeta = function (it) {
@@ -6541,7 +6553,7 @@ module.exports = function (it, tag, stat) {
 
 var $export = __webpack_require__(0);
 var defined = __webpack_require__(24);
-var fails = __webpack_require__(665);
+var fails = __webpack_require__(4);
 var spaces = __webpack_require__(94);
 var space = '[' + spaces + ']';
 var non = '\u200b\u0085';
@@ -7048,7 +7060,7 @@ module.exports = function () {
 
 var hide = __webpack_require__(12);
 var redefine = __webpack_require__(13);
-var fails = __webpack_require__(665);
+var fails = __webpack_require__(4);
 var defined = __webpack_require__(24);
 var wks = __webpack_require__(6);
 
@@ -7104,7 +7116,7 @@ var meta = __webpack_require__(32);
 var forOf = __webpack_require__(43);
 var anInstance = __webpack_require__(42);
 var isObject = __webpack_require__(5);
-var fails = __webpack_require__(665);
+var fails = __webpack_require__(4);
 var $iterDetect = __webpack_require__(69);
 var setToStringTag = __webpack_require__(50);
 var inheritIfRequired = __webpack_require__(95);
@@ -7223,7 +7235,7 @@ module.exports = {
 "use strict";
 
 // Forced replacement prototype accessors methods
-module.exports = __webpack_require__(36) || !__webpack_require__(665)(function () {
+module.exports = __webpack_require__(36) || !__webpack_require__(4)(function () {
   var K = Math.random();
   // In FF throws only define methods
   // eslint-disable-next-line no-undef, no-useless-call
@@ -8902,7 +8914,7 @@ var LIBRARY = __webpack_require__(36);
 var $typed = __webpack_require__(74);
 var hide = __webpack_require__(12);
 var redefineAll = __webpack_require__(44);
-var fails = __webpack_require__(665);
+var fails = __webpack_require__(4);
 var anInstance = __webpack_require__(42);
 var toInteger = __webpack_require__(25);
 var toLength = __webpack_require__(9);
@@ -11416,7 +11428,7 @@ module.exports = isKey;
 /* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = !__webpack_require__(7) && !__webpack_require__(665)(function () {
+module.exports = !__webpack_require__(7) && !__webpack_require__(4)(function () {
   return Object.defineProperty(__webpack_require__(88)('div'), 'a', { get: function () { return 7; } }).a != 7;
 });
 
@@ -11510,7 +11522,7 @@ var IObject = __webpack_require__(54);
 var $assign = Object.assign;
 
 // should work with symbols and should have deterministic property order (V8 bug)
-module.exports = !$assign || __webpack_require__(665)(function () {
+module.exports = !$assign || __webpack_require__(4)(function () {
   var A = {};
   var B = {};
   // eslint-disable-next-line no-undef
@@ -12027,7 +12039,7 @@ var meta = __webpack_require__(32);
 var assign = __webpack_require__(137);
 var weak = __webpack_require__(157);
 var isObject = __webpack_require__(5);
-var fails = __webpack_require__(665);
+var fails = __webpack_require__(4);
 var validate = __webpack_require__(53);
 var WEAK_MAP = 'WeakMap';
 var getWeak = meta.getWeak;
@@ -12495,68 +12507,55 @@ quip.apps.initialize({
         }
 
         if (!params.isCreation) {
+            console.log('Default data load');
+            var _recordId = '0063i000002FGghAAG';
+
+            /* Get ChildRecords of Opportunity 
+            salesforceClient.fetchChildRecords(recordId).then(([childCount, childrecords]) => {
+                console.log(childrecords);
+            }); */
+
             var userDefinedFields;
+            var RecordIds = ['a0F3i000000ubCMEAY', 'a0F3i000000u4YqEAI'];
 
-            (function () {
-                console.log('Default data load');
-                var recordId = '0063i000002FGghAAG';
+            //for (let i=0;i<RecordIds.length;i++){
+            salesforceClient.fetchRecordAndSchema(RecordIds[0]).then(function (_ref3) {
+                var _ref4 = _slicedToArray(_ref3, 2),
+                    fields = _ref4[0],
+                    schema = _ref4[1];
 
-                /* Get ChildRecords of Opportunity 
-                salesforceClient.fetchChildRecords(recordId).then(([childCount, childrecords]) => {
-                    console.log(childrecords);
-                }); */
-
-                var RecordIds = ['a0F3i000000ubCMEAY', 'a0F3i000000u4YqEAI'];
-
-                var _loop = function _loop(i) {
-                    salesforceClient.fetchRecordAndSchema(RecordIds[i]).then(function (_ref3) {
-                        var _ref4 = _slicedToArray(_ref3, 2),
-                            fields = _ref4[0],
-                            schema = _ref4[1];
-
-                        if (userDefinedFields) {
-                            userDefinedFields = userDefinedFields.filter(function (key) {
-                                return fields.find(function (field) {
-                                    return field.key == key;
-                                }) != null;
-                            });
-                        }
-                        console.log("recordId0", RecordIds[i]);
-                        rootRecord.setSelectedRecord(RecordIds[i], schema, userDefinedFields);
+                if (userDefinedFields) {
+                    userDefinedFields = userDefinedFields.filter(function (key) {
+                        return fields.find(function (field) {
+                            return field.key == key;
+                        }) != null;
                     });
-                };
-
-                for (var i = 0; i < RecordIds.length; i++) {
-                    _loop(i);
                 }
-                /*
-                salesforceClient
-                    .fetchRecordAndSchema(RecordIds[1])
-                    .then(([fields, schema]) => {
-                        if (userDefinedFields) {
-                            userDefinedFields = userDefinedFields.filter(
-                                key => {
-                                    return (
-                                        fields.find(
-                                            field => field.key == key) !=
-                                        null
-                                    );
-                                }); 
-                        }
-                        console.log("recordId1",RecordIds[1]);
-                    rootRecord.setSelectedRecordData(
-                        RecordIds[1],
-                        schema,
-                        userDefinedFields);
-                    }).then(steps => {
-                /// }    */
+                rootRecord.setSelectedRecord(RecordIds[0], schema, userDefinedFields);
+            });
+            // }    
+            salesforceClient.fetchRecordAndSchema(RecordIds[1]).then(function (_ref5) {
+                var _ref6 = _slicedToArray(_ref5, 2),
+                    fields = _ref6[0],
+                    schema = _ref6[1];
 
+                if (userDefinedFields) {
+                    userDefinedFields = userDefinedFields.filter(function (key) {
+                        return fields.find(function (field) {
+                            return field.key == key;
+                        }) != null;
+                    });
+                }
+                console.log("recordId1", RecordIds[1]);
+                rootRecord.setSelectedRecordData(RecordIds[1], schema, userDefinedFields);
+            }).then(function (steps) {
+                /// }   
                 ReactDOM.render(React.createElement(
                     "div",
                     {
                         __source: {
                             fileName: _jsxFileName,
-                            lineNumber: 172
+                            lineNumber: 169
                         },
                         __self: _this
                     },
@@ -12570,14 +12569,13 @@ quip.apps.initialize({
                         },
                         __source: {
                             fileName: _jsxFileName,
-                            lineNumber: 173
+                            lineNumber: 170
                         },
                         __self: _this
                     })
                 ), root);
-                //});   
-                //rootRecord.ensureCurrentDataVersion();
-            })();
+            });
+            //rootRecord.ensureCurrentDataVersion();
         }
         menuDelegate.refreshToolbar();
     }
@@ -12699,7 +12697,7 @@ var Root = function (_React$Component) {
                 _dialog2.default,
                 { onDismiss: this.dismissMismatchedInstanceErrorDialog_, __source: {
                         fileName: _jsxFileName,
-                        lineNumber: 298
+                        lineNumber: 295
                     },
                     __self: this
                 },
@@ -12707,7 +12705,7 @@ var Root = function (_React$Component) {
                     "div",
                     { className: _recordPicker3.default.errorDialog, __source: {
                             fileName: _jsxFileName,
-                            lineNumber: 299
+                            lineNumber: 296
                         },
                         __self: this
                     },
@@ -12715,7 +12713,7 @@ var Root = function (_React$Component) {
                         "div",
                         { className: _recordPicker3.default.header, __source: {
                                 fileName: _jsxFileName,
-                                lineNumber: 300
+                                lineNumber: 297
                             },
                             __self: this
                         },
@@ -12725,7 +12723,7 @@ var Root = function (_React$Component) {
                         "div",
                         { className: _recordPicker3.default.errorTextBlock, __source: {
                                 fileName: _jsxFileName,
-                                lineNumber: 303
+                                lineNumber: 300
                             },
                             __self: this
                         },
@@ -12733,7 +12731,7 @@ var Root = function (_React$Component) {
                             "div",
                             { className: _recordPicker3.default.errorTextDescription, __source: {
                                     fileName: _jsxFileName,
-                                    lineNumber: 304
+                                    lineNumber: 301
                                 },
                                 __self: this
                             },
@@ -12743,7 +12741,7 @@ var Root = function (_React$Component) {
                                     {
                                         __source: {
                                             fileName: _jsxFileName,
-                                            lineNumber: 311
+                                            lineNumber: 308
                                         },
                                         __self: this
                                     },
@@ -12754,7 +12752,7 @@ var Root = function (_React$Component) {
                                     {
                                         __source: {
                                             fileName: _jsxFileName,
-                                            lineNumber: 314
+                                            lineNumber: 311
                                         },
                                         __self: this
                                     },
@@ -12767,7 +12765,7 @@ var Root = function (_React$Component) {
                         "div",
                         { className: _recordPicker3.default.actions, __source: {
                                 fileName: _jsxFileName,
-                                lineNumber: 322
+                                lineNumber: 319
                             },
                             __self: this
                         },
@@ -12775,7 +12773,7 @@ var Root = function (_React$Component) {
                             text: quiptext("Cancel"),
                             onClick: this.dismissMismatchedInstanceErrorDialog_, __source: {
                                 fileName: _jsxFileName,
-                                lineNumber: 323
+                                lineNumber: 320
                             },
                             __self: this
                         }),
@@ -12784,7 +12782,7 @@ var Root = function (_React$Component) {
                             text: quiptext("Log Out and Reconnect"),
                             onClick: this.logoutAndReconnect_, __source: {
                                 fileName: _jsxFileName,
-                                lineNumber: 326
+                                lineNumber: 323
                             },
                             __self: this
                         })
@@ -12799,7 +12797,7 @@ var Root = function (_React$Component) {
                 "div",
                 { className: _recordPicker3.default.loginContext, __source: {
                         fileName: _jsxFileName,
-                        lineNumber: 336
+                        lineNumber: 333
                     },
                     __self: this
                 },
@@ -12808,7 +12806,7 @@ var Root = function (_React$Component) {
                     {
                         __source: {
                             fileName: _jsxFileName,
-                            lineNumber: 337
+                            lineNumber: 334
                         },
                         __self: this
                     },
@@ -12823,7 +12821,7 @@ var Root = function (_React$Component) {
                         target: "_blank",
                         href: "https://www.quipsupport.com/hc/en-us/articles/115001166766-How-do-I-integrate-Quip-and-Salesforce-", __source: {
                             fileName: _jsxFileName,
-                            lineNumber: 341
+                            lineNumber: 338
                         },
                         __self: this
                     },
@@ -12834,7 +12832,7 @@ var Root = function (_React$Component) {
                     {
                         __source: {
                             fileName: _jsxFileName,
-                            lineNumber: 347
+                            lineNumber: 344
                         },
                         __self: this
                     },
@@ -12865,7 +12863,7 @@ var Root = function (_React$Component) {
                     onDismiss: this.hideRecordPicker_,
                     menuDelegate: this.props.menuDelegate, __source: {
                         fileName: _jsxFileName,
-                        lineNumber: 363
+                        lineNumber: 360
                     },
                     __self: this
                 });
@@ -12882,7 +12880,7 @@ var Root = function (_React$Component) {
             if (!selectedRecord) {
                 return React.createElement(quip.apps.ui.Spinner, { size: 25, loading: true, __source: {
                         fileName: _jsxFileName,
-                        lineNumber: 379
+                        lineNumber: 376
                     },
                     __self: this
                 });
@@ -12894,7 +12892,7 @@ var Root = function (_React$Component) {
                 {
                     __source: {
                         fileName: _jsxFileName,
-                        lineNumber: 383
+                        lineNumber: 380
                     },
                     __self: this
                 },
@@ -12906,7 +12904,7 @@ var Root = function (_React$Component) {
                         return _this4.recordComponent_ = node;
                     }, __source: {
                         fileName: _jsxFileName,
-                        lineNumber: 384
+                        lineNumber: 381
                     },
                     __self: this
                 }),
@@ -12918,7 +12916,7 @@ var Root = function (_React$Component) {
                         return _this4.recordComponent_ = node;
                     }, __source: {
                         fileName: _jsxFileName,
-                        lineNumber: 389
+                        lineNumber: 386
                     },
                     __self: this
                 })
@@ -12940,7 +12938,7 @@ var Root = function (_React$Component) {
                     "div",
                     { className: _recordPicker3.default.openPicker, __source: {
                             fileName: _jsxFileName,
-                            lineNumber: 410
+                            lineNumber: 407
                         },
                         __self: this
                     },
@@ -12948,14 +12946,14 @@ var Root = function (_React$Component) {
                         disabled: showRecordPicker,
                         text: actionText, __source: {
                             fileName: _jsxFileName,
-                            lineNumber: 411
+                            lineNumber: 408
                         },
                         __self: this
                     })
                 );
                 placeholderOverlay = React.createElement("div", { className: _recordPicker3.default.placeholderOverlay, __source: {
                         fileName: _jsxFileName,
-                        lineNumber: 415
+                        lineNumber: 412
                     },
                     __self: this
                 });
@@ -12965,7 +12963,7 @@ var Root = function (_React$Component) {
                 "div",
                 { className: _recordPicker3.default.root, __source: {
                         fileName: _jsxFileName,
-                        lineNumber: 418
+                        lineNumber: 415
                     },
                     __self: this
                 },
@@ -12975,7 +12973,7 @@ var Root = function (_React$Component) {
                         className: recordContainerClassNames.join(" "),
                         onClick: recordContainerOnclick, __source: {
                             fileName: _jsxFileName,
-                            lineNumber: 419
+                            lineNumber: 416
                         },
                         __self: this
                     },
@@ -26903,7 +26901,7 @@ var DESCRIPTORS = __webpack_require__(7);
 var $export = __webpack_require__(0);
 var redefine = __webpack_require__(13);
 var META = __webpack_require__(32).KEY;
-var $fails = __webpack_require__(665);
+var $fails = __webpack_require__(4);
 var shared = __webpack_require__(64);
 var setToStringTag = __webpack_require__(50);
 var uid = __webpack_require__(35);
@@ -27460,7 +27458,7 @@ var has = __webpack_require__(15);
 var cof = __webpack_require__(20);
 var inheritIfRequired = __webpack_require__(95);
 var toPrimitive = __webpack_require__(23);
-var fails = __webpack_require__(665);
+var fails = __webpack_require__(4);
 var gOPN = __webpack_require__(40).f;
 var gOPD = __webpack_require__(17).f;
 var dP = __webpack_require__(8).f;
@@ -27590,7 +27588,7 @@ $export($export.P + $export.F * (!!$toFixed && (
   0.9.toFixed(0) !== '1' ||
   1.255.toFixed(2) !== '1.25' ||
   1000000000000000128.0.toFixed(0) !== '1000000000000000128'
-) || !__webpack_require__(665)(function () {
+) || !__webpack_require__(4)(function () {
   // V8 ~ Android 4.3-
   $toFixed.call({});
 })), 'Number', {
@@ -27653,7 +27651,7 @@ $export($export.P + $export.F * (!!$toFixed && (
 "use strict";
 
 var $export = __webpack_require__(0);
-var $fails = __webpack_require__(665);
+var $fails = __webpack_require__(4);
 var aNumberValue = __webpack_require__(142);
 var $toPrecision = 1.0.toPrecision;
 
@@ -27938,7 +27936,7 @@ var $export = __webpack_require__(0);
 var $imul = Math.imul;
 
 // some WebKit versions fails with big numbers, some has wrong arity
-$export($export.S + $export.F * __webpack_require__(665)(function () {
+$export($export.S + $export.F * __webpack_require__(4)(function () {
   return $imul(0xffffffff, 5) != -5 || $imul.length != 2;
 }), 'Math', {
   imul: function imul(x, y) {
@@ -28010,7 +28008,7 @@ var expm1 = __webpack_require__(98);
 var exp = Math.exp;
 
 // V8 near Chromium 38 has a problem with very small numbers
-$export($export.S + $export.F * __webpack_require__(665)(function () {
+$export($export.S + $export.F * __webpack_require__(4)(function () {
   return !Math.sinh(-2e-17) != -2e-17;
 }), 'Math', {
   sinh: function sinh(x) {
@@ -28445,7 +28443,7 @@ var $export = __webpack_require__(0);
 var toObject = __webpack_require__(10);
 var toPrimitive = __webpack_require__(23);
 
-$export($export.P + $export.F * __webpack_require__(665)(function () {
+$export($export.P + $export.F * __webpack_require__(4)(function () {
   return new Date(NaN).toJSON() !== null
     || Date.prototype.toJSON.call({ toISOString: function () { return 1; } }) !== 1;
 }), 'Date', {
@@ -28479,7 +28477,7 @@ $export($export.P + $export.F * (Date.prototype.toISOString !== toISOString), 'D
 "use strict";
 
 // 20.3.4.36 / 15.9.5.43 Date.prototype.toISOString()
-var fails = __webpack_require__(665);
+var fails = __webpack_require__(4);
 var getTime = Date.prototype.getTime;
 var $toISOString = Date.prototype.toISOString;
 
@@ -28613,7 +28611,7 @@ var $export = __webpack_require__(0);
 var createProperty = __webpack_require__(105);
 
 // WebKit Array.of isn't generic
-$export($export.S + $export.F * __webpack_require__(665)(function () {
+$export($export.S + $export.F * __webpack_require__(4)(function () {
   function F() { /* empty */ }
   return !(Array.of.call(F) instanceof F);
 }), 'Array', {
@@ -28662,7 +28660,7 @@ var toLength = __webpack_require__(9);
 var arraySlice = [].slice;
 
 // fallback for not array-like ES3 strings and DOM objects
-$export($export.P + $export.F * __webpack_require__(665)(function () {
+$export($export.P + $export.F * __webpack_require__(4)(function () {
   if (html) arraySlice.call(html);
 }), 'Array', {
   slice: function slice(begin, end) {
@@ -28692,7 +28690,7 @@ $export($export.P + $export.F * __webpack_require__(665)(function () {
 var $export = __webpack_require__(0);
 var aFunction = __webpack_require__(11);
 var toObject = __webpack_require__(10);
-var fails = __webpack_require__(665);
+var fails = __webpack_require__(4);
 var $sort = [].sort;
 var test = [1, 2, 3];
 
@@ -28997,7 +28995,7 @@ var re2 = /a/g;
 // "new" creates a new object, old webkit buggy here
 var CORRECT_NEW = new $RegExp(re1) !== re1;
 
-if (__webpack_require__(7) && (!CORRECT_NEW || __webpack_require__(665)(function () {
+if (__webpack_require__(7) && (!CORRECT_NEW || __webpack_require__(4)(function () {
   re2[__webpack_require__(6)('match')] = false;
   // RegExp constructor can alter flags and IsRegExp works correct with @@match
   return $RegExp(re1) != re1 || $RegExp(re2) == re2 || $RegExp(re1, 'i') != '/a/i';
@@ -29046,7 +29044,7 @@ var define = function (fn) {
 };
 
 // 21.2.5.14 RegExp.prototype.toString()
-if (__webpack_require__(665)(function () { return $toString.call({ source: 'a', flags: 'b' }) != '/a/b'; })) {
+if (__webpack_require__(4)(function () { return $toString.call({ source: 'a', flags: 'b' }) != '/a/b'; })) {
   define(function toString() {
     var R = anObject(this);
     return '/'.concat(R.source, '/',
@@ -29523,7 +29521,7 @@ $export($export.S + $export.F * !$typed.CONSTR, ARRAY_BUFFER, {
   }
 });
 
-$export($export.P + $export.U + $export.F * __webpack_require__(665)(function () {
+$export($export.P + $export.U + $export.F * __webpack_require__(4)(function () {
   return !new $ArrayBuffer(2).slice(1, undefined).byteLength;
 }), ARRAY_BUFFER, {
   // 24.1.4.3 ArrayBuffer.prototype.slice(start, end)
@@ -29665,7 +29663,7 @@ var anObject = __webpack_require__(2);
 var rApply = (__webpack_require__(3).Reflect || {}).apply;
 var fApply = Function.apply;
 // MS Edge argumentsList argument is optional
-$export($export.S + $export.F * !__webpack_require__(665)(function () {
+$export($export.S + $export.F * !__webpack_require__(4)(function () {
   rApply(function () { /* empty */ });
 }), 'Reflect', {
   apply: function apply(target, thisArgument, argumentsList) {
@@ -29686,7 +29684,7 @@ var create = __webpack_require__(39);
 var aFunction = __webpack_require__(11);
 var anObject = __webpack_require__(2);
 var isObject = __webpack_require__(5);
-var fails = __webpack_require__(665);
+var fails = __webpack_require__(4);
 var bind = __webpack_require__(138);
 var rConstruct = (__webpack_require__(3).Reflect || {}).construct;
 
@@ -29740,7 +29738,7 @@ var anObject = __webpack_require__(2);
 var toPrimitive = __webpack_require__(23);
 
 // MS Edge has broken Reflect.defineProperty - throwing instead of returning false
-$export($export.S + $export.F * __webpack_require__(665)(function () {
+$export($export.S + $export.F * __webpack_require__(4)(function () {
   // eslint-disable-next-line no-undef
   Reflect.defineProperty(dP.f({}, 1, { value: 1 }), 1, { value: 2 });
 }), 'Reflect', {
@@ -46516,37 +46514,6 @@ var FieldBuilderMenu = exports.FieldBuilderMenu = function (_BaseMenu) {
 
     return FieldBuilderMenu;
 }(_baseMenu.BaseMenu);
-
-/***/ }),
-/* 647 */,
-/* 648 */,
-/* 649 */,
-/* 650 */,
-/* 651 */,
-/* 652 */,
-/* 653 */,
-/* 654 */,
-/* 655 */,
-/* 656 */,
-/* 657 */,
-/* 658 */,
-/* 659 */,
-/* 660 */,
-/* 661 */,
-/* 662 */,
-/* 663 */,
-/* 664 */,
-/* 665 */
-/***/ (function(module, exports) {
-
-module.exports = function (exec) {
-  try {
-    return !!exec();
-  } catch (e) {
-    return true;
-  }
-};
-
 
 /***/ })
 /******/ ]);

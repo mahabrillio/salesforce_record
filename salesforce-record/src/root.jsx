@@ -125,9 +125,9 @@ quip.apps.initialize({
             var userDefinedFields;
             let RecordIds = ['a0F3i000000ubCMEAY','a0F3i000000u4YqEAI'];
 
-           for (let i=0;i<RecordIds.length;i++){
+           //for (let i=0;i<RecordIds.length;i++){
                 salesforceClient
-                        .fetchRecordAndSchema(RecordIds[i])
+                        .fetchRecordAndSchema(RecordIds[0])
                         .then(([fields, schema]) => {
                             if (userDefinedFields) {
                                 userDefinedFields = userDefinedFields.filter(
@@ -139,14 +139,12 @@ quip.apps.initialize({
                                         );
                                     }); 
                             }
-                            console.log("recordId0",RecordIds[i]);
                         rootRecord.setSelectedRecord(
-                            RecordIds[i],
+                            RecordIds[0],
                             schema,
                             userDefinedFields);
                 });
-            }    
-                /*
+           // }    
                 salesforceClient
                     .fetchRecordAndSchema(RecordIds[1])
                     .then(([fields, schema]) => {
@@ -166,8 +164,7 @@ quip.apps.initialize({
                         schema,
                         userDefinedFields);
                     }).then(steps => {
-           /// }    */
-            
+           /// }   
                     ReactDOM.render(
                         <div>
                                 <WrappedRoot
@@ -181,7 +178,7 @@ quip.apps.initialize({
                                 />
                         </div>,
                         root);
-                    //});   
+                    });   
             //rootRecord.ensureCurrentDataVersion();
         }
         menuDelegate.refreshToolbar();
