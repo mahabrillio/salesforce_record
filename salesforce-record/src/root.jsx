@@ -123,11 +123,11 @@ quip.apps.initialize({
             }); */
 
             var userDefinedFields;
-            let RecordIds = ['a0F3i000000ubCMEAY','a0F3i000000u4YqEAI'];
+           // let RecordIds = ['a0F3i000000ubCMEAY','a0F3i000000u4YqEAI'];
 
            //for (let i=0;i<RecordIds.length;i++){
                 salesforceClient
-                        .fetchRecordAndSchema(RecordIds[0])
+                        .fetchRecordAndSchema(recordId)
                         .then(([fields, schema]) => {
                             if (userDefinedFields) {
                                 userDefinedFields = userDefinedFields.filter(
@@ -140,12 +140,12 @@ quip.apps.initialize({
                                     }); 
                             }
                         rootRecord.setSelectedRecord(
-                            RecordIds[0],
+                            recordId,
                             schema,
                             userDefinedFields);
                 });
            // }    
-                salesforceClient
+              /*  salesforceClient
                     .fetchRecordAndSchema(RecordIds[1])
                     .then(([fields, schema]) => {
                         if (userDefinedFields) {
@@ -163,7 +163,7 @@ quip.apps.initialize({
                         RecordIds[1],
                         schema,
                         userDefinedFields);
-                    }).then(steps => {
+                    }).then(steps => { */
            /// }   
                     ReactDOM.render(
                         <div>
@@ -178,7 +178,7 @@ quip.apps.initialize({
                                 />
                         </div>,
                         root);
-                    });   
+                  //  });   
             //rootRecord.ensureCurrentDataVersion();
         }
         menuDelegate.refreshToolbar();
@@ -357,19 +357,26 @@ class Root extends React.Component {
         if (showMismatchedInstanceError) {
             dialog = this.renderMismatchedInstanceDialog_();
         } else if (showRecordPicker) {
-            dialog = <RecordPicker
+            dialog = <div><RecordPicker
                 entity={entity}
                 onSelectRecord={this.selectRecord_}
                 onDismiss={this.hideRecordPicker_}
-                menuDelegate={this.props.menuDelegate}/>;
+                menuDelegate={this.props.menuDelegate}/>
+                <RecordPickerChild
+                entity={entity}
+                onSelectRecord={this.selectRecord_}
+                onDismiss={this.hideRecordPicker_}
+                menuDelegate={this.props.menuDelegate}/>
+                </div>;
+                
         }
 
         const selectedRecord = entity.getSelectedRecord();
 
-        const selectedRecordData = entity.getSelectedRecordData();
+        //const selectedRecordData = entity.getSelectedRecordData();
 
         console.log("SelectedRec",selectedRecord);
-        console.log("SelectedRecData",selectedRecordData);
+        //console.log("SelectedRecData",selectedRecordData);
         // array of child records //
         // Should hit this only in url unfurling case
         if (!selectedRecord) {
@@ -381,11 +388,6 @@ class Root extends React.Component {
                 <Record
                     isCreation={this.props.isCreation}
                     entity={selectedRecord}
-                    menuDelegate={menuDelegate}
-                    ref={node => (this.recordComponent_ = node)}/>
-                <Record
-                    isCreation={this.props.isCreation}
-                    entity={selectedRecordData}
                     menuDelegate={menuDelegate}
                     ref={node => (this.recordComponent_ = node)}/>    
             </div>;
